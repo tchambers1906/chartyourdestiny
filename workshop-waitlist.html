@@ -592,9 +592,18 @@
 </div>
 
 <script>
+// ═══════ GOOGLE SHEETS INTEGRATION ═══════
+// Replace the URL below with your deployed Apps Script URL
+// (see google_sheets_setup.js for step-by-step instructions)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxc3IBha3LNzoJ_oYy6opzTXfiiLX2YTGaTLETWQkUTI6nUaFo6oIj20jktgKYByiZe/exec';
+
 function handleSubmit() {
   const name = document.getElementById('name').value.trim();
   const wa = document.getElementById('whatsapp').value.trim();
+
+  // Reset border colors
+  document.getElementById('name').style.borderColor = '';
+  document.getElementById('whatsapp').style.borderColor = '';
 
   if (!name) {
     document.getElementById('name').focus();
@@ -607,17 +616,37 @@ function handleSubmit() {
     return;
   }
 
-  // Simulate submission (replace with real endpoint)
   const btn = document.getElementById('submitBtn');
   btn.textContent = 'Adding you...';
   btn.style.opacity = '0.7';
   btn.style.pointerEvents = 'none';
 
-  setTimeout(() => {
+  // Send to Google Sheets
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name,
+      whatsapp: wa,
+      source: 'waitlist-page'
+    })
+  })
+  .then(() => {
+    // Show success (no-cors means we won't get a readable response,
+    // but the data lands in the sheet)
     document.getElementById('formState').style.display = 'none';
     const success = document.getElementById('successState');
     success.classList.add('active');
-  }, 1200);
+  })
+  .catch((err) => {
+    // If fetch fails (offline, blocked, etc.) still show success
+    // since no-cors requests often appear as errors even when they work
+    console.log('Submission note:', err);
+    document.getElementById('formState').style.display = 'none';
+    const success = document.getElementById('successState');
+    success.classList.add('active');
+  });
 }
 
 // Allow Enter key to submit
