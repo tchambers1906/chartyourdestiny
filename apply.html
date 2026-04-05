@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply | Terra AI School by T.C. Chambers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1A3A5C;
+    --navy-deep: #0B1D30;
+    --navy-mid: #132E48;
+    --gold: #C9A84C;
+    --gold-light: #DBBF6A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-glow: rgba(201,168,76,0.06);
+    --cream: #F8F3E8;
+    --white: #FFFFFF;
+    --text-soft: rgba(255,255,255,0.55);
+    --text-muted: rgba(255,255,255,0.35);
+    --border-subtle: rgba(201,168,76,0.18);
+    --error: #E85D5D;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* ═══════ HERO HEADER ═══════ */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(19,46,72,0.9) 0%, var(--navy-deep) 70%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 119px,
+      rgba(201,168,76,0.03) 119px, rgba(201,168,76,0.03) 120px
+    );
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 65%);
+    top: -200px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+    animation: orbFloat 14s ease-in-out infinite;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(25px); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--white);
+    margin-bottom: 8px;
+    animation: revealUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  }
+  .hero-title .gold {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 24px;
+    animation: revealUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--text-soft);
+    max-width: 480px;
+    margin: 0 auto;
+    animation: revealUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+  }
+
+  /* ═══════ FORM BODY ═══════ */
+  .form-body {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ═══════ SECTION CARDS ═══════ */
+  .section-card {
+    background: linear-gradient(170deg, rgba(26,58,92,0.4) 0%, rgba(11,29,48,0.7) 100%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 40px 36px;
+    margin-top: 28px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    animation: revealUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .section-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 100px;
+    padding: 5px 14px;
+    margin-bottom: 28px;
+  }
+  .section-label-text {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ═══════ FORM ELEMENTS ═══════ */
+  .field-group {
+    margin-bottom: 28px;
+  }
+  .field-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+
+  .field-required {
+    color: var(--gold);
+    margin-left: 2px;
+    font-weight: 500;
+  }
+
+  .field-hint {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .field-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--white);
+    outline: none;
+    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  }
+  .field-input::placeholder {
+    color: rgba(255,255,255,0.2);
+  }
+  .field-input:focus {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.04);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+  }
+  .field-input.error {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(232,93,93,0.1);
+  }
+
+  textarea.field-input {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  /* Radio options */
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .radio-option:hover {
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.04);
+  }
+  .radio-option.selected {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  .radio-circle {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.25s;
+  }
+  .radio-option.selected .radio-circle {
+    border-color: var(--gold);
+  }
+  .radio-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    transform: scale(0);
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .radio-option.selected .radio-dot {
+    transform: scale(1);
+  }
+
+  .radio-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    transition: color 0.25s;
+  }
+  .radio-option.selected .radio-text {
+    color: var(--white);
+  }
+
+  /* Checkbox */
+  .checkbox-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+    margin-top: 6px;
+  }
+  .checkbox-option:hover {
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.04);
+  }
+  .checkbox-option.checked {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+
+  .checkbox-box {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .checkbox-option.checked .checkbox-box {
+    border-color: var(--gold);
+    background: var(--gold);
+  }
+  .check-icon {
+    width: 10px; height: 10px;
+    stroke: var(--navy-deep);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: scale(0);
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .checkbox-option.checked .check-icon {
+    transform: scale(1);
+  }
+
+  .checkbox-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+    transition: color 0.25s;
+  }
+  .checkbox-option.checked .checkbox-text {
+    color: var(--white);
+  }
+
+  /* ═══════ PROGRESS BAR ═══════ */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--gold);
+    z-index: 100;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ═══════ SUBMIT BUTTON ═══════ */
+  .submit-section {
+    margin-top: 36px;
+    text-align: center;
+  }
+
+  .btn-submit {
+    display: inline-block;
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 32px;
+    background: var(--gold);
+    color: var(--navy-deep);
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-submit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .btn-submit:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(201,168,76,0.3);
+  }
+  .btn-submit:hover::after {
+    transform: translateX(100%);
+  }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .submit-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  /* ═══════ SUCCESS STATE ═══════ */
+  .success-container {
+    display: none;
+    max-width: 520px;
+    margin: 60px auto 80px;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .success-container.active {
+    display: block;
+    animation: revealUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .success-card {
+    background: linear-gradient(170deg, rgba(26,58,92,0.5) 0%, rgba(11,29,48,0.8) 100%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 56px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .success-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+  }
+
+  .success-check {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    border: 2px solid rgba(201,168,76,0.4);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    animation: checkPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+  }
+  @keyframes checkPop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .success-check svg {
+    width: 32px; height: 32px;
+    stroke: var(--gold);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .success-msg {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-soft);
+    line-height: 1.75;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  /* ═══════ DISCLAIMER ═══════ */
+  .disclaimer {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.18);
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  /* ═══════ ERROR TOAST ═══════ */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(232,93,93,0.95);
+    color: var(--white);
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 200;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    backdrop-filter: blur(10px);
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ═══════ ANIMATIONS ═══════ */
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ═══════ RESPONSIVE ═══════ */
+  @media (max-width: 640px) {
+    .hero { padding: 60px 24px 44px; }
+    .section-card { padding: 28px 22px; }
+    .hero-title { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- ═══════ HERO ═══════ -->
+<header class="hero">
+  <div class="hero-content">
+
+    <h1 class="hero-title">
+      Apply to the<br><span class="gold">Terra AI School</span><br>by T.C. Chambers
+    </h1>
+    <p class="hero-subtitle">AI-Powered 8-Week Program. Bali. In Person.</p>
+    <p class="hero-desc">
+      This application helps us determine if the program is the right fit for you.
+      There are no wrong answers. Be specific. Be honest. Spots are limited to 40 participants per cohort.
+    </p>
+  </div>
+</header>
+
+<!-- ═══════ FORM ═══════ -->
+<div class="form-body" id="formBody">
+
+  <!-- SECTION 1: ABOUT YOU -->
+  <div class="section-card" style="animation-delay: 0.1s;">
+    <div class="section-label">
+      <span class="section-label-text">About You</span>
+    </div>
+
+    <!-- Q1 -->
+    <div class="field-group">
+      <label class="field-label">Full Name<span class="field-required">*</span></label>
+      <input type="text" class="field-input" id="q1_name" placeholder="Your full name" autocomplete="name">
+    </div>
+
+    <!-- Q2 -->
+    <div class="field-group">
+      <label class="field-label">Best Email Address<span class="field-required">*</span></label>
+      <input type="email" class="field-input" id="q2_email" placeholder="you@example.com" autocomplete="email">
+    </div>
+
+    <!-- Q3 -->
+    <div class="field-group">
+      <label class="field-label">WhatsApp Number<span class="field-required">*</span></label>
+      <input type="tel" class="field-input" id="q3_whatsapp" placeholder="+62 812 3456 7890" autocomplete="tel">
+    </div>
+
+    <!-- Q4 -->
+    <div class="field-group">
+      <label class="field-label">Instagram Handle / LinkedIn Profile URL</label>
+      <p class="field-hint">Optional. Either or both.</p>
+      <input type="text" class="field-input" id="q4_social" placeholder="@handle or linkedin.com/in/yourname">
+    </div>
+  </div>
+
+  <!-- SECTION 2: YOUR EXPERTISE -->
+  <div class="section-card" style="animation-delay: 0.2s;">
+    <div class="section-label">
+      <span class="section-label-text">Your Expertise</span>
+    </div>
+
+    <!-- Q5 -->
+    <div class="field-group">
+      <label class="field-label">What is your area of professional expertise?<span class="field-required">*</span></label>
+      <p class="field-hint">Describe it in one or two sentences. Be specific.</p>
+      <textarea class="field-input" id="q5_expertise" placeholder="e.g., I help restaurant owners reduce food waste costs through inventory management systems."></textarea>
+    </div>
+
+    <!-- Q6 -->
+    <div class="field-group">
+      <label class="field-label">How long have you been working in this field?<span class="field-required">*</span></label>
+      <div class="radio-group" data-name="q6_years">
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">5 to 10 years</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">10 to 20 years</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">20+ years</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="field-group">
+      <label class="field-label">Have you earned income from this expertise before?<span class="field-required">*</span></label>
+      <p class="field-hint">Consulting, freelancing, coaching, training, or any paid work.</p>
+      <div class="radio-group" data-name="q7_income">
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">Yes, regularly</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">Yes, occasionally</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">No, but people ask me for help in this area constantly</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">No</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: YOUR BUSINESS SITUATION -->
+  <div class="section-card" style="animation-delay: 0.3s;">
+    <div class="section-label">
+      <span class="section-label-text">Your Business Situation</span>
+    </div>
+
+    <!-- Q8 -->
+    <div class="field-group">
+      <label class="field-label">Do you currently run a business or offer services based on your expertise?<span class="field-required">*</span></label>
+      <div class="radio-group" data-name="q8_business">
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">Yes, full-time</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">Yes, as a side project</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">No, but I want to</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">No, I am still employed and exploring</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="field-group">
+      <label class="field-label">What is your average monthly revenue from this expertise right now?<span class="field-required">*</span></label>
+      <p class="field-hint">Consider the past 6 months. Approximate is fine.</p>
+      <div class="radio-group" data-name="q9_revenue">
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">$0 (pre-launch)</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">$1 to $1,000</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">$1,000 to $5,000</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">$5,000 to $10,000</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">$10,000+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="field-group">
+      <label class="field-label">What is your freedom number?<span class="field-required">*</span></label>
+      <p class="field-hint">The monthly recurring revenue that gives you the ability to live life on your own terms.</p>
+      <input type="text" class="field-input" id="q10_freedom" placeholder="e.g., $5,000/month, $10,000/month">
+    </div>
+  </div>
+
+  <!-- SECTION 4: MOTIVATION AND FIT -->
+  <div class="section-card" style="animation-delay: 0.4s;">
+    <div class="section-label">
+      <span class="section-label-text">Motivation &amp; Fit</span>
+    </div>
+
+    <!-- Q11 -->
+    <div class="field-group">
+      <label class="field-label">What do you believe is the single biggest thing standing between you and turning your expertise into income?<span class="field-required">*</span></label>
+      <textarea class="field-input" id="q11_obstacle" placeholder="Be honest. There are no wrong answers."></textarea>
+    </div>
+
+    <!-- Q12 -->
+    <div class="field-group">
+      <label class="field-label">Why do you want to join this program specifically?<span class="field-required">*</span></label>
+      <textarea class="field-input" id="q12_why" placeholder="What is it about this program that speaks to your situation?"></textarea>
+    </div>
+
+    <!-- Q13 -->
+    <div class="field-group">
+      <label class="field-label">What does taking full ownership of your results look like to you?<span class="field-required">*</span></label>
+      <textarea class="field-input" id="q13_ownership" placeholder="In your own words."></textarea>
+    </div>
+
+    <!-- Q14 -->
+    <div class="field-group">
+      <label class="field-label">This program requires 3 hours per week in live sessions plus approximately 2 to 3 hours of homework. Are you prepared to commit for 8 consecutive weeks?<span class="field-required">*</span></label>
+      <div class="radio-group" data-name="q14_commit">
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">Yes, I am fully committed</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">I need to check my schedule</span>
+        </div>
+        <div class="radio-option" onclick="selectRadio(this)">
+          <div class="radio-circle"><div class="radio-dot"></div></div>
+          <span class="radio-text">I am concerned about the time commitment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: CONFIRMATION -->
+  <div class="section-card" style="animation-delay: 0.5s;">
+    <div class="section-label">
+      <span class="section-label-text">Confirmation</span>
+    </div>
+
+    <!-- Q15 -->
+    <div class="field-group">
+      <label class="field-label">Bali Confirmation<span class="field-required">*</span></label>
+      <div class="checkbox-option" id="q15_bali" onclick="toggleCheckbox(this)">
+        <div class="checkbox-box">
+          <svg class="check-icon" viewBox="0 0 12 12"><polyline points="2 6 5 9 10 3"></polyline></svg>
+        </div>
+        <span class="checkbox-text">I confirm that I am based in Bali or will be in Bali for the full 8-week duration.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+      Submit Application
+    </button>
+    <p class="submit-note">
+      You will receive a confirmation via WhatsApp within 48 hours.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════ SUCCESS ═══════ -->
+<div class="success-container" id="successState">
+  <div class="success-card">
+    <div class="success-check">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <h3 class="success-title">Application received.</h3>
+    <p class="success-msg">
+      Thank you for applying. We will review your application and reach out via WhatsApp within 48 hours. Keep an eye on your messages.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════ DISCLAIMER ═══════ -->
+<div class="disclaimer">
+  This is an educational program only. It does not promise income, business success, or specific financial outcomes. Results vary based on individual effort, prior experience, and market conditions. Your personal data is collected solely for application processing and will not be shared with third parties without your consent. Compliant with Indonesian Consumer Protection Law No. 8/1999 and PDP Law No. 27/2022.
+</div>
+
+<!-- ═══════ TOAST ═══════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════ CONFIGURATION ═══════
+const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+// ═══════ RADIO / CHECKBOX HANDLERS ═══════
+function selectRadio(el) {
+  const group = el.closest('.radio-group');
+  group.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+  el.classList.add('selected');
+  updateProgress();
+}
+
+function toggleCheckbox(el) {
+  el.classList.toggle('checked');
+  updateProgress();
+}
+
+function getRadioValue(name) {
+  const group = document.querySelector(`.radio-group[data-name="${name}"]`);
+  const selected = group ? group.querySelector('.radio-option.selected') : null;
+  return selected ? selected.querySelector('.radio-text').textContent : '';
+}
+
+// ═══════ PROGRESS BAR ═══════
+function updateProgress() {
+  const fields = [
+    !!document.getElementById('q1_name').value.trim(),
+    !!document.getElementById('q2_email').value.trim(),
+    !!document.getElementById('q3_whatsapp').value.trim(),
+    !!document.getElementById('q5_expertise').value.trim(),
+    !!getRadioValue('q6_years'),
+    !!getRadioValue('q7_income'),
+    !!getRadioValue('q8_business'),
+    !!getRadioValue('q9_revenue'),
+    !!document.getElementById('q10_freedom').value.trim(),
+    !!document.getElementById('q11_obstacle').value.trim(),
+    !!document.getElementById('q12_why').value.trim(),
+    !!document.getElementById('q13_ownership').value.trim(),
+    !!getRadioValue('q14_commit'),
+    document.getElementById('q15_bali').classList.contains('checked'),
+  ];
+  const filled = fields.filter(Boolean).length;
+  const pct = Math.round((filled / fields.length) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// Listen for typing
+document.querySelectorAll('.field-input').forEach(input => {
+  input.addEventListener('input', updateProgress);
+});
+
+// ═══════ VALIDATION + SUBMIT ═══════
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+function handleSubmit() {
+  // Clear previous errors
+  document.querySelectorAll('.field-input.error').forEach(el => el.classList.remove('error'));
+
+  // Required text fields
+  const requiredText = [
+    { id: 'q1_name', label: 'Full Name' },
+    { id: 'q2_email', label: 'Email' },
+    { id: 'q3_whatsapp', label: 'WhatsApp Number' },
+    { id: 'q5_expertise', label: 'Professional Expertise' },
+    { id: 'q10_freedom', label: 'Freedom Number' },
+    { id: 'q11_obstacle', label: 'Biggest Obstacle' },
+    { id: 'q12_why', label: 'Why This Program' },
+    { id: 'q13_ownership', label: 'Ownership' },
+  ];
+
+  for (const field of requiredText) {
+    const el = document.getElementById(field.id);
+    if (!el.value.trim()) {
+      el.classList.add('error');
+      el.focus();
+      showToast('Please fill in: ' + field.label);
+      return;
+    }
+  }
+
+  // Required radio groups
+  const requiredRadios = [
+    { name: 'q6_years', label: 'Years of Experience' },
+    { name: 'q7_income', label: 'Prior Income from Expertise' },
+    { name: 'q8_business', label: 'Current Business Status' },
+    { name: 'q9_revenue', label: 'Monthly Revenue' },
+    { name: 'q14_commit', label: 'Time Commitment' },
+  ];
+
+  for (const radio of requiredRadios) {
+    if (!getRadioValue(radio.name)) {
+      showToast('Please select: ' + radio.label);
+      const group = document.querySelector(`.radio-group[data-name="${radio.name}"]`);
+      if (group) group.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+  }
+
+  // Checkbox
+  if (!document.getElementById('q15_bali').classList.contains('checked')) {
+    showToast('Please confirm you are based in or will be in Bali.');
+    document.getElementById('q15_bali').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Email format
+  const email = document.getElementById('q2_email').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('q2_email').classList.add('error');
+    document.getElementById('q2_email').focus();
+    showToast('Please enter a valid email address.');
+    return;
+  }
+
+  // Build payload
+  const payload = {
+    name: document.getElementById('q1_name').value.trim(),
+    email: email,
+    whatsapp: document.getElementById('q3_whatsapp').value.trim(),
+    social: document.getElementById('q4_social').value.trim(),
+    expertise: document.getElementById('q5_expertise').value.trim(),
+    years: getRadioValue('q6_years'),
+    prior_income: getRadioValue('q7_income'),
+    business_status: getRadioValue('q8_business'),
+    monthly_revenue: getRadioValue('q9_revenue'),
+    freedom_number: document.getElementById('q10_freedom').value.trim(),
+    biggest_obstacle: document.getElementById('q11_obstacle').value.trim(),
+    why_program: document.getElementById('q12_why').value.trim(),
+    ownership: document.getElementById('q13_ownership').value.trim(),
+    time_commitment: getRadioValue('q14_commit'),
+    bali_confirmed: 'Yes',
+    source: 'application-page',
+  };
+
+  // Submit
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  .then(() => {
+    document.getElementById('formBody').style.display = 'none';
+    document.getElementById('progressBar').style.width = '100%';
+    const success = document.getElementById('successState');
+    success.classList.add('active');
+    success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  })
+  .catch(() => {
+    showToast('Something went wrong. Please try again.');
+    btn.textContent = 'Submit Application';
+    btn.disabled = false;
+  });
+}
+</script>
+
+</body>
+</html>
